@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: dim_customer
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+          - unique
+  - name: fact_sales
+    columns:
+      - name: order_id
+        data_type: int64
+        quote: true
+        description: A unique identifier for each order, representing the transaction between the customer and the business.
+      - name: product_id
+        data_type: int64
+        quote: true
+        description: A unique identifier for each product included in the order, used to track specific items purchased.
+      - name: customer_id
+        data_type: int64
+        quote: true
+        description: A unique identifier for the customer who placed the order, used to associate the transaction with the individual buyer.
+      - name: employee_id
+        data_type: int64
+        quote: true
+        description: The unique identifier for the employee who processed the order.
+      - name: shipper_id
+        data_type: int64
+        quote: true
+        description: The unique identifier for the shipper responsible for delivering the order.
+      - name: quantity
+        data_type: int64
+        quote: true
+        description: The number of units of the product ordered.
+      - name: unit_price
+        data_type: float64
+        quote: true
+        description: The price per unit of the product being sold in the order.
+      - name: discount
+        data_type: int64
+        quote: true
+        description: The discount applied to the product in the order, represented as an integer value.
+      - name: status_id
+        data_type: int64
+        quote: true
+        description: The identifier representing the status of the order, such as pending, shipped, or completed.
+      - name: date_allocated
+        data_type: string
+        quote: true
+        description: The date when the inventory or product was allocated for the order. This is stored as a string.
+      - name: purchase_order_id
+        data_type: int64
+        quote: true
+        description: The unique identifier for the purchase order associated with the transaction.
+      - name: inventory_id
+        data_type: int64
+        quote: true
+        description: The unique identifier for the inventory item related to the order.
+      - name: order_date
+        data_type: date
+        quote: true
+        description: The date when the order was placed by the customer.
+      - name: shipped_date
+        data_type: timestamp
+        quote: true
+        description: The timestamp indicating when the order was shipped to the customer.
+      - name: paid_date
+        data_type: timestamp
+        quote: true
+        description: The timestamp indicating when the payment for the order was completed.
+      - name: insertion_timestamp
+        data_type: timestamp
+        quote: true
+        description: The timestamp indicating when the record was inserted into the fact_sales model. This is generated using the current_timestamp() function at the time of data processing.
+    description: The fact_sales model aggregates sales data from the stg_orders and stg_order_details tables. It includes detailed information about orders, products, customers, employees, shippers, and inventory. The model ensures uniqueness by removing duplicate rows based on a combination of key attributes such as customer_id, employee_id, order_id, product_id, shipper_id, purchase_order_id, and order_date. It provides insights into sales transactions, including quantities, unit prices, discounts, order statuses, and timestamps for order, shipment, and payment events.
